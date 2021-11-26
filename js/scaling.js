@@ -3,7 +3,7 @@ const SCALE_START = {
         rank: E(1),
 		tier: E(2),
 		tetr: E(7),
-        massUpg: E(40),
+        massUpg: E(50),
 		tickspeed: E(100),
 		bh_condenser: E(100),
 		gamma_ray: E(100),
