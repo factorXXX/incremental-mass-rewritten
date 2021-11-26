@@ -27,12 +27,13 @@ const FORMS = {
 
         if (player.ranks.tier.gte(2)) x = x.pow(1.15)
         if (player.ranks.rank.gte(180)) x = x.pow(1.025)
-        if (!CHALS.inChal(3)) x = x.pow(tmp.chal.eff[3])
+        if (!CHALS.inChal(3)) x = x.pow(tmp.chal.eff[4])
         if (player.md.active) {
             x = expMult(x,0.8)
             if (player.atom.elements.includes(28)) x = x.pow(1.5)
         }
         if (CHALS.inChal(9)) x = expMult(x,0.9)
+        if(player.mass.gte(x.times(100))) x=new E(0)
         return x.softcap(tmp.massSoftGain,tmp.massSoftPower,0).softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
     },
     massSoftGain() {
@@ -98,11 +99,12 @@ const FORMS = {
     },
     rp: {
         gain() {
-            if (player.mass.lt(1e15) || CHALS.inChal(7)) return E(0)
-            let gain = player.mass.div(1e15).root(3)
+            if (player.mass.lt(2.5e7) || CHALS.inChal(7)) return E(0)
+            let gain = player.mass.div(2.5e7).root(3)
             if (player.ranks.rank.gte(14)) gain = gain.mul(2)
             if (player.ranks.rank.gte(45)) gain = gain.mul(RANKS.effect.rank[45]())
             if (player.ranks.tier.gte(6)) gain = gain.mul(RANKS.effect.tier[6]())
+            gain=gain.times(E(0).add(tmp.chal.eff[1]).max(1))
             if (player.mainUpg.bh.includes(6)) gain = gain.mul(tmp.upgs.main?tmp.upgs.main[2][6].effect:E(1))
             gain = gain.mul(tmp.atom.particles[1].powerEffect.eff1)
             if (player.supernova.tree.includes("rp1")) gain = gain.mul(tmp.supernova.tree_eff.rp1)
@@ -127,7 +129,9 @@ const FORMS = {
     bh: {
         see() { return player.rp.unl },
         DM_gain() {
-            let gain = player.rp.points.div(1e20)
+            let gain = player.rp.points
+            //.div(1e27)
+            .div(1e100)
             if (CHALS.inChal(7)) gain = player.mass.div(1e180)
             if (gain.lt(1)) return E(0)
             gain = gain.root(4)
@@ -215,8 +219,8 @@ const FORMS = {
     },
     reset_msg: {
         msgs: {
-            rp: "Require over 1e9 tonne of mass to reset previous features for gain Rage Powers",
-            dm: "Require over 1e20 Rage Power to reset all previous features for gain Dark Matters",
+            rp: "Require over 25 tonne of mass to reset previous features for gain Rage Powers",
+            dm: "Require over 1e27 Rage Power to reset all previous features for gain Dark Matters (You can't reset yet)",
             atom: "Require over 1e100 uni of black hole to reset all previous features for gain Atoms & Quarks",
             md: "Dilate mass, then cancel",
         },
@@ -233,8 +237,8 @@ const FORMS = {
 
 const UPGS = {
     mass: {
-        cols: 3,
-        autoOnly: [0,1,2],
+        cols: 4,
+        autoOnly: [0,1,2,3],
         temp() {
             if (!tmp.upgs.mass) tmp.upgs.mass = {}
             for (let x = this.cols; x >= 1; x--) {
@@ -372,7 +376,7 @@ const UPGS = {
             },
         },
         3: {
-            unl() { return player.ranks.rank.gte(3) || player.mainUpg.atom.includes(1) },
+            unl() { return player.ranks.rank.gte(2) || player.mainUpg.atom.includes(1) },
             title: "Stronger",
             start: E(1000),
             inc: E(9),
@@ -385,21 +389,49 @@ const UPGS = {
                 if (player.mainUpg.rp.includes(12)) step = step.add(tmp.upgs.main?tmp.upgs.main[1][12].effect:E(0))
                 if (player.atom.elements.includes(4)) step = step.mul(tmp.elements.effect[4])
                 if (player.md.upgs[3].gte(1)) step = step.mul(tmp.md.upgs[3].eff)
+                step = step.mul(tmp.upgs.mass[4]?tmp.upgs.mass[4].eff.eff:1)
+               
                 let sp = 0.5
                 if (player.mainUpg.atom.includes(9)) sp *= 1.15
                 if (player.ranks.tier.gte(30)) sp *= 1.1
-                let ret = step.mul(x.add(tmp.upgs.mass[3].bouns)).add(1).softcap(ss,sp,0).softcap(1.8e5,0.5,0)
+                let ret = step.mul(x.add(tmp.upgs.mass[3].bouns)).add(1).softcap(ss,sp,0).softcap(25,0.2,0)
                 return {step: step, eff: ret, ss: ss}
             },
             effDesc(eff) {
                 return {
                     step: "+^"+format(eff.step),
-                    eff: "^"+format(eff.eff)+" to Booster Power"+(eff.eff.gte(eff.ss)?` <span class='soft'>(softcapped${eff.eff.gte(1.8e5)?"^2":""})</span>`:"")
+                    eff: "^"+format(eff.eff)+" to Booster Power"+(eff.eff.gte(eff.ss)?` <span class='soft'>(softcapped${eff.eff.gte(25)?"^2":""})</span>`:"")
                 }
             },
             bouns() {
                 let x = E(0)
                 if (player.mainUpg.rp.includes(7)) x = x.add(tmp.upgs.main?tmp.upgs.main[1][7].effect:0)
+                return x
+            },
+        },
+        4: {
+            unl() { return player.ranks.rank.gte(3) || player.mainUpg.atom.includes(1) },
+            title: "Goder",
+            start: E(100000),
+            inc: E(46),
+            effect(x) {
+                let step = E(0.05)
+                if(CHALS.inChal(1)) step = E(0)
+                // if (player.ranks.rank.gte(5)) step = step.add(RANKS.effect.rank[5]())
+                //step = step.pow(tmp.upgs.mass[3]?tmp.upgs.mass[3].eff.eff:1)
+                let ret = step.mul(x).add(1).pow(x.max(1)).softcap(1.6,0.75,0).softcap(2.4,0.25,0).softcap(8,0.25,0)
+
+                return {step: step, eff: ret}
+            },
+            effDesc(eff) {
+                return {
+                    step: "+"+format(eff.step)+"x and raise it to a power of "+player.massUpg[4],
+                    eff: "x"+format(eff.eff)+" to Stronger Power"+(eff.eff.gte(1.6)?` <span class='soft'>(softcapped${eff.eff.gte(8)?"^3":eff.eff.gte(2.4)?"^2":""})</span>`:"")
+                }
+            },
+            bouns() {
+                let x = E(0)
+                //if (player.mainUpg.rp.includes(7)) x = x.add(tmp.upgs.main?tmp.upgs.main[1][7].effect:0)
                 return x
             },
         },
@@ -468,10 +500,10 @@ const UPGS = {
                 cost: E(1e5),
             },
             7: {
-                desc: "For every 3 tickspeeds adds Stronger.",
+                desc: "For every 2 tickspeeds adds Stronger and unlock a challenge.",
                 cost: E(1e7),
                 effect() {
-                    let ret = player.tickspeed.div(3).add(player.atom.elements.includes(38)?tmp.elements.effect[38]:0).floor()
+                    let ret = player.tickspeed.div(2).add(player.atom.elements.includes(38)?tmp.elements.effect[38]:0).floor()
                     return ret
                 },
                 effDesc(x=this.effect()) {
@@ -480,7 +512,7 @@ const UPGS = {
             },
             8: {
                 desc: "Super Mass Upgrades scaling is weaker by Rage Points.",
-                cost: E(1e15),
+                cost: E(1e25),
                 effect() {
                     let ret = E(0.9).pow(player.rp.points.max(1).log10().max(1).log10().pow(1.25).softcap(2.5,0.5,0))
                     return ret
@@ -500,7 +532,7 @@ const UPGS = {
                 cost: E(1e43),
             },
             11: {
-                unl() { return player.chal.unl },
+                unl() { return player.mass.gte(1.5e156) },
                 desc: "Black Hole mass's gain is boosted by Rage Points.",
                 cost: E(1e72),
                 effect() {
@@ -512,7 +544,7 @@ const UPGS = {
                 },
             },
             12: {
-                unl() { return player.chal.unl },
+                unl() { return player.mass.gte(1.5e156) },
                 desc: "For every OoM of Rage Powers adds Stronger Power at a reduced rate.",
                 cost: E(1e120),
                 effect() {
@@ -524,7 +556,7 @@ const UPGS = {
                 },
             },
             13: {
-                unl() { return player.chal.unl },
+                unl() { return player.mass.gte(1.5e156) },
                 desc: "Mass gain softcap starts 3x later for every Rank you have.",
                 cost: E(1e180),
                 effect() {

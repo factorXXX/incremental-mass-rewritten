@@ -20,11 +20,15 @@ Decimal.prototype.softcap = function (start, power, mode) {
 
 function calc(dt, dt_offline) {
     player.mass = player.mass.add(tmp.massGain.mul(dt))
-    if (player.mainUpg.rp.includes(3)) for (let x = 1; x <= UPGS.mass.cols; x++) if (player.autoMassUpg[x] && (player.ranks.rank.gte(x) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(x)
+    //if (player.mainUpg.rp.includes(3)) for (let x = 1; x <= UPGS.mass.cols; x++) if (player.autoMassUpg[x] && (player.ranks.rank.gte(x) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(x)
+    if (player.mainUpg.rp.includes(3)&&player.autoMassUpg[1]&& (player.ranks.rank.gte(1) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(1)
+    if (player.mainUpg.rp.includes(3)&&player.autoMassUpg[2]&& (player.ranks.rank.gte(2) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(2)
+    if (player.mainUpg.rp.includes(3)&&player.autoMassUpg[3]&& (player.ranks.rank.gte(2) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(3)
+    if (player.mainUpg.rp.includes(3)&&player.autoMassUpg[4]&& (player.ranks.rank.gte(3) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(4)
     if (FORMS.tickspeed.autoUnl() && player.autoTickspeed) FORMS.tickspeed.buyMax()
     if (FORMS.bh.condenser.autoUnl() && player.bh.autoCondenser) FORMS.bh.condenser.buyMax()
     if (player.atom.elements.includes(18) && player.atom.auto_gr) ATOM.gamma_ray.buyMax()
-    if (player.mass.gte(1.5e136)) player.chal.unl = true
+    if (player.mainUpg.rp.includes(7)) player.chal.unl = true
     for (let x = 0; x < RANKS.names.length; x++) {
         let rn = RANKS.names[x]
         if (RANKS.autoUnl[rn]() && player.auto_ranks[rn]) RANKS.bulk(rn)
@@ -73,7 +77,7 @@ function getPlayerData() {
             
         },
         massUpg: {},
-        autoMassUpg: [null,false,false,false],
+        autoMassUpg: [null,false,false,false,false],
         autoTickspeed: false,
         mainUpg: {
             

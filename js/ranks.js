@@ -48,8 +48,8 @@ const RANKS = {
     desc: {
         rank: {
             1: "unlock mass upgrade 1.",
-            2: "unlock mass upgrade 2, reduce mass upgrade 1 cost scaled by 20%.",
-            3: "unlock mass upgrade 3, reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself.",
+            2: "unlock mass upgrade 2 and 3, reduce mass upgrade 1 cost scaled by 20%.",
+            3: "unlock mass upgrade 4, reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself.",
             4: "reduce mass upgrade 3 cost scale by 20%.",
             5: "mass upgrade 2 boosts itself.",
             6: "make mass gain is boosted by (x+1)^2, where x is rank.",
@@ -202,8 +202,8 @@ function updateRanksTemp() {
     if (!tmp.ranks) tmp.ranks = {}
     for (let x = 0; x < RANKS.names.length; x++) if (!tmp.ranks[RANKS.names[x]]) tmp.ranks[RANKS.names[x]] = {}
     let fp = RANKS.fp.rank()
-    tmp.ranks.rank.req = E(10).pow(player.ranks.rank.div(fp).pow(1.15)).mul(10)
-    tmp.ranks.rank.bulk = player.mass.div(10).max(1).log10().root(1.15).mul(fp).add(1).floor();
+    tmp.ranks.rank.req = E(10).pow(player.ranks.rank.div(fp).pow(1.15)).mul(25)
+    tmp.ranks.rank.bulk = player.mass.div(25).max(1).log10().root(1.15).mul(fp).add(1).floor();
     if (player.mass.lt(10)) tmp.ranks.rank.bulk = 0
     if (scalingActive("rank", player.ranks.rank.max(tmp.ranks.rank.bulk), "super")) {
 		let start = getScalingStart("super", "rank");
@@ -216,9 +216,9 @@ function updateRanksTemp() {
 					.div(start.pow(exp.sub(1)))
                     .div(fp)
 					.pow(1.15)
-			).mul(10)
+			).mul(50)
 		tmp.ranks.rank.bulk = player.mass
-            .div(10)
+            .div(50)
 			.max(1)
 			.log10()
             
@@ -245,9 +245,9 @@ function updateRanksTemp() {
 					.div(start.pow(exp.sub(1)))
                     .div(fp)
 					.pow(1.15)
-			).mul(10)
+			).mul(50)
 		tmp.ranks.rank.bulk = player.mass
-            .div(10)
+            .div(50)
 			.max(1)
 			.log10()
             
@@ -281,9 +281,9 @@ function updateRanksTemp() {
 					.div(start.pow(exp.sub(1)))
                     .div(fp)
 					.pow(1.15)
-			).mul(10)
+			).mul(50)
 		tmp.ranks.rank.bulk = player.mass
-            .div(10)
+            .div(50)
 			.max(1)
 			.log10()
             

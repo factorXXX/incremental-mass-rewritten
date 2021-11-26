@@ -56,8 +56,9 @@ function updateChalTemp() {
 const CHALS = {
     inChal(x) { return player.chal.active == x },
     reset(x, chal_reset=true) {
-        if (x < 5) FORMS.bh.doReset()
-        else if (x < 9) ATOM.doReset(chal_reset)
+        if (x < 2) FORMS.rp.doReset() 
+        else if (x < 6) FORMS.bh.doReset()
+        else if (x < 10) ATOM.doReset(chal_reset)
         else SUPERNOVA.reset(true, true)
     },
     exit() {
@@ -76,7 +77,7 @@ const CHALS = {
         }
     },
     getResource(x) {
-        if (x < 5 || x > 8) return player.mass
+        if (x < 6 || x > 9) return player.mass 
         return player.bh.mass
     },
     getResName(x) {
@@ -87,8 +88,9 @@ const CHALS = {
         return formatMass
     },
     getReset(x) {
-        if (x < 5) return "Entering challenge will reset with Dark Matters!"
-        if (x < 9) return "Entering challenge will reset with Atoms except previous challenges!"
+        if (x < 2) return "Entering challenge will reset with Rage power!"
+        if (x < 6) return "Entering challenge will reset with Dark Matters!"
+        if (x < 10) return "Entering challenge will reset with Atoms except previous challenges!"
         return "Entering challenge will reset without being Supernova!"
     },
     getMax(i) {
@@ -164,6 +166,21 @@ const CHALS = {
         return {goal: goal, bulk: bulk}
     },
     1: {
+        title: "Godless",
+        desc: "Goder have no effect.",
+        reward: `Multiple Rage Power gain.`,
+        max: E(100),
+        inc: E(4),
+        pow: E(1.2),
+        start: E(7.956e36),
+        effect(x) {
+            let ret = x.add(1).pow(1.9).floor()
+            return ret
+        },
+        effDesc(x) { return format(x,0)+"x"+" to Rage Power gain." },
+    },
+    2: {
+        unl() { return player.bh.unl },
         title: "Instant Scale",
         desc: "Super Ranks, Mass Upgrades starts at 25. In addtional, Super Tickspeed start at 50.",
         reward: `Super Ranks starts later, Super Tickspeed scaling weaker by completions.`,
@@ -178,8 +195,8 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x.rank,0)+" later to Super Ranks, Super Tickspeed scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker" },
     },
-    2: {
-        unl() { return player.chal.comps[1].gte(1) || player.atom.unl },
+    3: {
+        unl() { return player.chal.comps[2].gte(1) || player.atom.unl },
         title: "Anti-Tickspeed",
         desc: "You cannot buy Tickspeed.",
         reward: `For every completions adds +7.5% to Tickspeed Power.`,
@@ -196,8 +213,8 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x.mul(100))+"%"+(x.gte(0.3)?" <span class='soft'>(softcapped)</span>":"") },
     },
-    3: {
-        unl() { return player.chal.comps[2].gte(1) || player.atom.unl },
+    4: {
+        unl() { return player.chal.comps[3].gte(1) || player.atom.unl },
         title: "Melted Mass",
         desc: "Mass gain softcap is divided by 1e150, and is stronger.",
         reward: `Mass gain are raised by completions, but cannot append while in this challenge!`,
@@ -211,8 +228,8 @@ const CHALS = {
         },
         effDesc(x) { return "^"+format(x) },
     },
-    4: {
-        unl() { return player.chal.comps[3].gte(1) || player.atom.unl },
+    5: {
+        unl() { return player.chal.comps[4].gte(1) || player.atom.unl },
         title: "Weakened Rage",
         desc: "Rage Points gain is rooted by 10. In addtional, mass gain softcap is divided by 1e100.",
         reward: `Rage Powers gain are raised by completions.`,
@@ -226,7 +243,7 @@ const CHALS = {
         },
         effDesc(x) { return "^"+format(x) },
     },
-    5: {
+    6: {
         unl() { return player.atom.unl },
         title: "No Rank",
         desc: "You cannot rank up.",
@@ -241,8 +258,8 @@ const CHALS = {
         },
         effDesc(x) { return format(E(1).sub(x).mul(100))+"% weaker"+(x.log(0.97).gte(5)?" <span class='soft'>(softcapped)</span>":"") },
     },
-    6: {
-        unl() { return player.chal.comps[5].gte(1) || player.supernova.times.gte(1) },
+    7: {
+        unl() { return player.chal.comps[6].gte(1) || player.supernova.times.gte(1) },
         title: "No Tickspeed & Condenser",
         desc: "You cannot buy Tickspeed & BH Condenser.",
         reward: `For every completions adds +10% to Tickspeed & BH Condenser Power.`,
@@ -256,8 +273,8 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x)+"x"+(x.gte(0.5)?" <span class='soft'>(softcapped)</span>":"") },
     },
-    7: {
-        unl() { return player.chal.comps[6].gte(1) || player.supernova.times.gte(1) },
+    8: {
+        unl() { return player.chal.comps[7].gte(1) || player.supernova.times.gte(1) },
         title: "No Rage Powers",
         desc: "You cannot gain Rage Powers, but Dark Matters are gained by mass instead of Rage Powers at a reduced rate.<br>In addtional, mass gain softcap is stronger.",
         reward: `Completions adds 2 maximum completions of 1-4 Challenge.<br><span class="yellow">On 16th completion, unlock Elements</span>`,
@@ -272,8 +289,8 @@ const CHALS = {
         },
         effDesc(x) { return "+"+format(x,0) },
     },
-    8: {
-        unl() { return player.chal.comps[7].gte(1) || player.supernova.times.gte(1) },
+    9: {
+        unl() { return player.chal.comps[8].gte(1) || player.supernova.times.gte(1) },
         title: "White Hole",
         desc: "Dark Matter & Mass from Black Hole gains are rooted by 8.",
         reward: `Dark Matter & Mass from Black Hole gains are raised by completions.<br><span class="yellow">On first completion, unlock 3 rows of Elements</span>`,
@@ -287,7 +304,7 @@ const CHALS = {
         },
         effDesc(x) { return "^"+format(x) },
     },
-    9: {
+    10: {
         unl() { return player.supernova.tree.includes("chal4") },
         title: "No Particles",
         desc: "You cannot assign quarks. In addtional, mass gains exponent is raised to 0.9th power.",
@@ -302,7 +319,7 @@ const CHALS = {
         },
         effDesc(x) { return "^"+format(x) },
     },
-    cols: 9,
+    cols: 10,
 }
 
 /*

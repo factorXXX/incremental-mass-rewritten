@@ -1,15 +1,15 @@
 const SCALE_START = {
     super: {
-        rank: E(50),
-		tier: E(10),
+        rank: E(1),
+		tier: E(2),
 		tetr: E(7),
-        massUpg: E(100),
+        massUpg: E(40),
 		tickspeed: E(100),
 		bh_condenser: E(100),
 		gamma_ray: E(100),
     },
 	hyper: {
-		rank: E(120),
+		rank: E(7),
 		massUpg: E(500),
 		tickspeed: E(250),
 		bh_condenser: E(300),
@@ -102,18 +102,18 @@ function getScalingStart(type, name) {
 	let start = E(SCALE_START[type][name])
 	if (type=="super") {
 		if (name=="rank") {
-			if (CHALS.inChal(1)) return E(25)
-			start = start.add(tmp.chal?tmp.chal.eff[1].rank:0)
+			if (CHALS.inChal(2)) return E(25)
+			start = start.add(tmp.chal?tmp.chal.eff[2].rank:0)
 		}
 		if (name=="tier") {
 			if (player.mainUpg.atom.includes(5)) start = start.add(10)
 		}
 		if (name=="massUpg") {
-			if (CHALS.inChal(1)) return E(25)
+			if (CHALS.inChal(2)) return E(25)
 			if (player.mainUpg.bh.includes(3)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[2][3].effect:0:0)
 		}
 		if (name=='tickspeed') {
-			if (CHALS.inChal(1)) return E(50)
+			if (CHALS.inChal(2)) return E(50)
 		}
 	}
 	if (type=="hyper") {
