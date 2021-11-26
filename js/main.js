@@ -33,7 +33,7 @@ const FORMS = {
             if (player.atom.elements.includes(28)) x = x.pow(1.5)
         }
         if (CHALS.inChal(9)) x = expMult(x,0.9)
-        if(player.mass.gte(x.times(100))) x=new E(x**0.8)
+        if(player.mass.gte(x.times(120))) x=new E(0)
         return x.softcap(tmp.massSoftGain,tmp.massSoftPower,0).softcap(tmp.massSoftGain2,tmp.massSoftPower2,0)
     },
     massSoftGain() {
