@@ -222,7 +222,7 @@ const FORMS = {
         msgs: {
             rp: "Require over 25 tonne of mass to reset previous features for gain Rage Powers",
             dm: "Require over 1e27 Rage Power to reset all previous features for gain Dark Matters",
-            atom: "Require over 1e115 uni of black hole and 100 C1 completions to reset all previous features for gain Atoms & Quarks",
+            atom: "Require over 1e115 uni of black hole and 100 C1 completions to reset all previous features for gain Atoms & Quarks (You can't reset yet)",
             md: "Dilate mass, then cancel",
         },
         set(id) {
