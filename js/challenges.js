@@ -183,7 +183,7 @@ const CHALS = {
         unl() { return player.bh.unl },
         title: "Instant Scale",
         desc: "Hyper Ranks, super Mass Upgrades starts at 1. In addtional, Super Tickspeed start at 50.",
-        reward: `Super Ranks scaling weaker by completions.<br><span class="yellow">On second completion, keep rage challenge on black hole reset.</span>`,
+        reward: `Super Ranks scaling weaker and start later by completions.<br><span class="yellow">On second completion, keep rage challenge on black hole reset.</span>`,
         max: E(100),
         inc: E(5),
         pow: E(1.3),
@@ -193,7 +193,7 @@ const CHALS = {
             let tick = E(0.96).pow(x)
             return {rank: rank, tick: tick}
         },
-        effDesc(x) { return "Super Rank scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker" },
+        effDesc(x) { return "Super Rank scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker and start "+format(E(1).sub(x.tick).mul(100)) +" later"},
     },
     3: {
         unl() { return player.chal.comps[2].gte(1) || player.atom.unl },
