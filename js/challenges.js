@@ -81,7 +81,7 @@ const CHALS = {
         return player.bh.mass
     },
     getResName(x) {
-        if (x < 5 || x > 8) return ''
+        if (x < 6 || x > 9) return ''
         return ' of Black Hole'
     },
     getFormat(x) {
@@ -166,8 +166,8 @@ const CHALS = {
         return {goal: goal, bulk: bulk}
     },
     1: {
-        title: "Godless",
-        desc: "Goder have no effect.",
+        title: "Stackless",
+        desc: "Stacker have no effect.",
         reward: `Multiple Rage Power gain.`,
         max: E(100),
         inc: E(4),
@@ -182,18 +182,18 @@ const CHALS = {
     2: {
         unl() { return player.bh.unl },
         title: "Instant Scale",
-        desc: "Super Ranks, Mass Upgrades starts at 25. In addtional, Super Tickspeed start at 50.",
-        reward: `Super Ranks starts later, Super Tickspeed scaling weaker by completions.`,
+        desc: "Hyper Ranks, super Mass Upgrades starts at 1. In addtional, Super Tickspeed start at 50.",
+        reward: `Super Ranks scaling weaker by completions.<br><span class="yellow">On second completion, keep rage challenge on black hole reset.</span>`,
         max: E(100),
         inc: E(5),
         pow: E(1.3),
-        start: E(1.5e58),
+        start: E(2e5),
         effect(x) {
             let rank = x.softcap(20,4,1).floor()
-            let tick = E(0.96).pow(x.root(2))
+            let tick = E(0.96).pow(x)
             return {rank: rank, tick: tick}
         },
-        effDesc(x) { return "+"+format(x.rank,0)+" later to Super Ranks, Super Tickspeed scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker" },
+        effDesc(x) { return "Super Rank scaling "+format(E(1).sub(x.tick).mul(100))+"% weaker" },
     },
     3: {
         unl() { return player.chal.comps[2].gte(1) || player.atom.unl },
@@ -201,9 +201,9 @@ const CHALS = {
         desc: "You cannot buy Tickspeed.",
         reward: `For every completions adds +7.5% to Tickspeed Power.`,
         max: E(100),
-        inc: E(10),
-        pow: E(1.3),
-        start: E(1.989e40),
+        inc: E(12),
+        pow: E(1.35),
+        start: E(1.7916e30),
         effect(x) {
             let sp = E(0.5)
             if (player.atom.elements.includes(8)) sp = sp.pow(0.25)
@@ -214,31 +214,31 @@ const CHALS = {
         effDesc(x) { return "+"+format(x.mul(100))+"%"+(x.gte(0.3)?" <span class='soft'>(softcapped)</span>":"") },
     },
     4: {
-        unl() { return player.chal.comps[3].gte(1) || player.atom.unl },
+        unl() { return player.chal.comps[3].gte(7) || player.atom.unl },
         title: "Melted Mass",
-        desc: "Mass gain softcap is divided by 1e150, and is stronger.",
-        reward: `Mass gain are raised by completions, but cannot append while in this challenge!`,
+        desc: "Mass gain softcap is divided by 1e150, and is stronger. In addtional, Rage Points gain is rooted by 10.",
+        reward: `Mass gain and Rage Powers gain are raised by completions.`,
         max: E(100),
         inc: E(25),
         pow: E(1.25),
-        start: E(2.9835e49),
+        start: E(1.989e39),
         effect(x) {
-            let ret = x.root(1.5).mul(0.01).add(1)
+            let ret = x.root(2).mul(0.05).add(1)
             return ret
         },
         effDesc(x) { return "^"+format(x) },
     },
     5: {
-        unl() { return player.chal.comps[4].gte(1) || player.atom.unl },
-        title: "Weakened Rage",
-        desc: "Rage Points gain is rooted by 10. In addtional, mass gain softcap is divided by 1e100.",
+        unl() { return player.atom.unl },
+        title: "Dead Rage",
+        desc: "Rage Points gain is always 0. In addtional, mass gain softcap is divided by 1e100.",
         reward: `Rage Powers gain are raised by completions.`,
         max: E(100),
         inc: E(30),
         pow: E(1.25),
         start: E(1.736881338559743e133),
         effect(x) {
-            let ret = x.root(1.5).mul(0.01).add(1)
+            let ret = x.root(1.5).mul(0.08).add(1)
             return ret
         },
         effDesc(x) { return "^"+format(x) },

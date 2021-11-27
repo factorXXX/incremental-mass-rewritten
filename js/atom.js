@@ -1,7 +1,8 @@
 const ATOM = {
     gain() {
-        let x = player.bh.mass.div(1.5e156)
+        let x = player.bh.mass.div(1.5e171)
         if (x.lt(1)) return E(0)
+        if(!player.chal.comps[1].gte(100)) return E(0)
         x = x.root(5)
         if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
         if (player.atom.elements.includes(17)) x = x.pow(1.1)
@@ -37,7 +38,7 @@ const ATOM = {
         let keep = []
         for (let x = 0; x < player.mainUpg.bh.length; x++) if ([5].includes(player.mainUpg.bh[x])) keep.push(player.mainUpg.bh[x])
         player.mainUpg.bh = keep
-        if (chal_reset && !player.mainUpg.atom.includes(4) && !player.supernova.tree.includes("chal2") ) for (let x = 1; x <= 4; x++) player.chal.comps[x] = E(0)
+        if (chal_reset && !player.mainUpg.atom.includes(4) && !player.supernova.tree.includes("chal2") ) for (let x = 2; x <= 5; x++) player.chal.comps[x] = E(0)
         FORMS.bh.doReset()
     },
     atomic: {
