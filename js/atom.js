@@ -2,8 +2,8 @@ const ATOM = {
     gain() {
         let x = player.bh.mass.div(1.5e171)
         if (x.lt(1)) return E(0)
-        if(!player.chal.comps[1].gte(101)) return E(0)
-        x = x.root(5)
+        if(!player.chal.comps[1].gte(100)) return E(0)
+        x = x.root(10)
         if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
         if (player.atom.elements.includes(17)) x = x.pow(1.1)
         return x.floor()

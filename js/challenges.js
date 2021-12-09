@@ -236,12 +236,12 @@ const CHALS = {
         max: E(100),
         inc: E(30),
         pow: E(1.25),
-        start: E(1.736881338559743e133),
+        start: E(1.5e200),
         effect(x) {
-            let ret = x.root(1.5).mul(0.08).add(1)
+            let ret = x.root(1.5).mul(0.08).add(1).softcap(2.25,5,1)
             return ret
         },
-        effDesc(x) { return "^"+format(x) },
+        effDesc(x) { return "^"+format(x)+(x.gte(2.25)?" <span class='soft'>(softcapped)</span>":"") },
     },
     6: {
         unl() { return player.atom.unl },
@@ -249,9 +249,9 @@ const CHALS = {
         desc: "You cannot rank up.",
         reward: `Rank requirement are weaker by completions.`,
         max: E(50),
-        inc: E(50),
-        pow: E(1.25),
-        start: E(1.5e136),
+        inc: E(1e4),
+        pow: E(2.25),
+        start: E("2.7e364"),
         effect(x) {
             let ret = E(0.97).pow(x.root(2).softcap(5,0.5,0))
             return ret
@@ -264,9 +264,9 @@ const CHALS = {
         desc: "You cannot buy Tickspeed & BH Condenser.",
         reward: `For every completions adds +10% to Tickspeed & BH Condenser Power.`,
         max: E(50),
-        inc: E(64),
-        pow: E(1.25),
-        start: E(1.989e38),
+        inc: E(1e3),
+        pow: E(2.5),
+        start: E(1.5e81),
         effect(x) {
             let ret = x.mul(0.1).add(1).softcap(1.5,player.atom.elements.includes(39)?1:0.5,0).sub(1)
             return ret
