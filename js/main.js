@@ -100,7 +100,7 @@ const FORMS = {
     },
     rp: {
         gain() {
-            if (player.mass.lt(2.5e7) || CHALS.inChal(8)) return E(0)
+            if (player.mass.lt(2.5e7) || CHALS.inChal(7)) return E(0)
             let gain = player.mass.div(2.5e7).root(3)
             if (player.ranks.rank.gte(14)) gain = gain.mul(2)
             if (player.ranks.rank.gte(45)) gain = gain.mul(RANKS.effect.rank[45]())
@@ -111,7 +111,6 @@ const FORMS = {
             if (player.supernova.tree.includes("rp1")) gain = gain.mul(tmp.supernova.tree_eff.rp1)
             if (player.mainUpg.bh.includes(8)) gain = gain.pow(1.15)
             gain = gain.pow(tmp.chal.eff[4])
-            gain = gain.pow(tmp.chal.eff[5])
             if (CHALS.inChal(4)) gain = gain.root(10)
            if (CHALS.inChal(5)) return E(0)
             if (player.md.active) gain = expMult(gain,0.8)
@@ -172,14 +171,12 @@ const FORMS = {
         },
         doReset() {
             let keep = []
-            
             for (let x = 0; x < player.mainUpg.rp.length; x++) if ([3,5,6].includes(player.mainUpg.rp[x])) keep.push(player.mainUpg.rp[x])
             player.mainUpg.rp = keep
             player.rp.points = E(0)
             player.tickspeed = E(0)
             player.bh.mass = E(0)
         if(!player.chal.comps[2].gte(2))    player.chal.comps[1] = E(1)
-        if(player.mainUpg.atom.includes(2)) player.chal.comps[1] = E(100)
             FORMS.rp.doReset()
         },
         effect() {
@@ -191,7 +188,7 @@ const FORMS = {
         condenser: {
             autoSwitch() { player.bh.autoCondenser = !player.bh.autoCondenser },
             autoUnl() { return player.mainUpg.atom.includes(2) },
-            can() { return player.bh.dm.gte(tmp.bh.condenser_cost) && !CHALS.inChal(7) },
+            can() { return player.bh.dm.gte(tmp.bh.condenser_cost) && !CHALS.inChal(6) },
             buy() {
                 if (this.can()) {
                     player.bh.dm = player.bh.dm.sub(tmp.bh.condenser_cost).max(0)
@@ -746,7 +743,7 @@ const UPGS = {
                 cost: E(1),
             },
             2: {
-                desc: "You can automatically buy BH Condenser and upgrades. Tickspeed no longer spent Rage Powers. And C1 completions is always 100.",
+                desc: "You can automatically buy BH Condenser and upgrades. Tickspeed no longer spent Rage Powers.",
                 cost: E(100),
             },
             3: {
@@ -754,7 +751,7 @@ const UPGS = {
                 cost: E(25000),
             },
             4: {
-                desc: "Keep 2-5 Challenge on reset. BH Condensers adds Gamma Rays Power at a reduced rate.",
+                desc: "Keep 1-4 Challenge on reset. BH Condensers adds Gamma Rays Power at a reduced rate.",
                 cost: E(1e10),
                 effect() {
                     let ret = player.bh.condenser.pow(0.8).mul(0.01)

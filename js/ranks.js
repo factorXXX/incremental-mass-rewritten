@@ -186,7 +186,7 @@ const RANKS = {
         rank() {
             let f = E(1)
             if (player.ranks.tier.gte(1)) f = f.mul(1/0.8)
-            f = f.mul(tmp.chal.eff[6].pow(-1))
+            f = f.mul(tmp.chal.eff[5].pow(-1))
             return f
         },
         tier() {
@@ -343,7 +343,7 @@ function updateRanksTemp() {
 			.add(1)
 			.floor();
 	}*/
-    tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(6)
+    tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5)
 
     fp = RANKS.fp.tier()
     tmp.ranks.tier.req = player.ranks.tier.div(fp).add(2).pow(2).floor()
