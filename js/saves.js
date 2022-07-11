@@ -136,6 +136,10 @@ function calc(dt, dt_offline) {
 function getPlayerData() {
     let s = {
         mass: E(0),
+        ma: {
+            points: E(0),
+            unl: false,
+        },
         ranks: {
             rank: E(0),
             tier: E(0),

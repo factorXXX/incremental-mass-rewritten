@@ -14,7 +14,7 @@ const ST_NAMES = [
 		["","Hc","DHe","THt","TeH","PHc","HHe","HpH","OHt","EHc"]
 	]
 ]
-const CONFIRMS = ['rp', 'bh', 'atom', 'sn', 'qu', 'br']
+const CONFIRMS = ['ma','rp', 'bh', 'atom', 'sn', 'qu', 'br']
 
 const FORMS = {
     getPreQUGlobalSpeed() {
@@ -43,7 +43,7 @@ const FORMS = {
         if (hasTree("m1")) x = x.mul(tmp.supernova.tree_eff.m1)
 
         x = x.mul(tmp.bosons.effect.pos_w[0])
-
+        x=x.div(1000)
         if (!hasElement(105)) x = x.mul(tmp.atom.particles[0].powerEffect.eff1)
         else x = x.pow(tmp.atom.particles[0].powerEffect.eff1)
 
@@ -133,6 +133,27 @@ const FORMS = {
     massSoftPower5() {
         let p = E(0.05)
         return p
+    },
+    ma: {
+        gain(){
+            if(player.mass.lt(0.05)) return E(0)
+            let gain=player.mass.div(0.05).pow(0.3)
+            gain=gain.floor()
+            return gain
+        },
+
+        reset() {
+            if (tmp.ma.can) if (player.confirms.ma?confirm("Are you sure to reset?"):true) {
+                player.ma.points = player.ma.points.add(tmp.ma.gain)
+                player.ma.unl = true
+                this.doReset()
+            }
+        },
+
+        doReset() {
+            player.ranks[RANKS.names[RANKS.names.length-1]] = E(0)
+            RANKS.doReset[RANKS.names[RANKS.names.length-1]]()
+        },
     },
     tickspeed: {
         cost(x=player.tickspeed) { return E(2).pow(x).floor() },
@@ -353,6 +374,7 @@ const FORMS = {
     },
     reset_msg: {
         msgs: {
+            ma: "Require over 50 mg of mass to reset previous features for gain Magics",
             rp: "Require over 1e9 tonne of mass to reset previous features for gain Rage Powers",
             dm: "Require over 1e20 Rage Power to reset all previous features for gain Dark Matters",
             atom: "Require over 1e100 uni of black hole to reset all previous features for gain Atoms & Quarks",
@@ -468,7 +490,8 @@ function formatMass(ex) {
     if (ex.gte(1.619e20)) return format(ex.div(1.619e20)) + ' MME'
     if (ex.gte(1e6)) return format(ex.div(1e6)) + ' tonne'
     if (ex.gte(1e3)) return format(ex.div(1e3)) + ' kg'
-    return format(ex) + ' g'
+    if (ex.gte(1)) return format(ex.div(1)) + ' g'
+    return format(ex.times(1000)) + ' mg'
 }
 
 function formatGain(amt, gain, isMass=false) {

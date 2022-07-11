@@ -192,6 +192,9 @@ function updateUpperHTML() {
 	tmp.el.mass.setHTML(formatMass(player.mass)+"<br>"+formatGain(player.mass, tmp.massGain.mul(gs), true))
 	
 	let unl = !quUnl()
+	tmp.el.ma_div.setDisplay(unl)
+	if (unl) tmp.el.maAmt.setHTML(format(player.ma.points,0)+"<br>"+"(+"+format(tmp.ma.gain,0)+")")
+
 	tmp.el.rp_div.setDisplay(unl)
 	if (unl) tmp.el.rpAmt.setHTML(format(player.rp.points,0)+"<br>"+(player.mainUpg.bh.includes(6)||player.mainUpg.atom.includes(6)?formatGain(player.rp.points, tmp.rp.gain.mul(gs)):"(+"+format(tmp.rp.gain,0)+")"))
 	

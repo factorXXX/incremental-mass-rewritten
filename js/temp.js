@@ -157,6 +157,12 @@ function updateUpgradesTemp() {
     UPGS.mass.temp()
 }
 
+function updateMagicTemp() {
+    if (!tmp.ma) tmp.ma = {}
+    tmp.ma.gain = FORMS.ma.gain()
+    tmp.ma.can = tmp.ma.gain.gte(1)
+}
+
 function updateRagePowerTemp() {
     if (!tmp.rp) tmp.rp = {}
     tmp.rp.gain = FORMS.rp.gain()
@@ -204,6 +210,7 @@ function updateTemp() {
     updateScalingTemp()
     updateChalTemp()
     updateAtomTemp()
+    updateMagicTemp()
     updateRagePowerTemp()
     updateBlackHoleTemp()
     updateTickspeedTemp()
