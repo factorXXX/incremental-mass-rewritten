@@ -234,7 +234,12 @@ function updateUpperHTML() {
 
 function updateMagicHTML() {
 	tmp.el.magic_btn.setClasses({btn: true, locked: !tmp.magiccan})
-	tmp.el.magiccost.setTxt(format(tmp.magicCost,0))	
+	tmp.el.magiccost.setTxt(format(tmp.magicCost,0))
+	
+	for(let i=0; i<=2; i++){
+		tmp.el["magicnum"+i].setTxt(format(player.ma.types[i],0))
+		tmp.el["magiceff"+i].setTxt(format(FORMS.ma.magiceff()[i],2))
+	}
 }
 
 function updateMassUpgradesHTML() {

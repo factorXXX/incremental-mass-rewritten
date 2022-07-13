@@ -394,9 +394,9 @@ function updateRanksTemp() {
     for (let x = 0; x < RANKS.names.length; x++) if (!tmp.ranks[RANKS.names[x]]) tmp.ranks[RANKS.names[x]] = {}
     let fp2 = tmp.qu.chroma_eff[1]
     let fp = RANKS.fp.rank()
-    tmp.ranks.rank.req = E(10).pow(player.ranks.rank.div(fp2).scaleEvery('rank').div(fp).pow(1.15)).mul(10)
+    tmp.ranks.rank.req = E(10).pow(player.ranks.rank.div(fp2).scaleEvery('rank').div(fp).pow(1.15)).mul(10).div(FORMS.ma.magiceff()[2])
     tmp.ranks.rank.bulk = E(0)
-    if (player.mass.gte(10)) tmp.ranks.rank.bulk = player.mass.div(10).max(1).log10().root(1.15).mul(fp).scaleEvery('rank',true).mul(fp2).add(1).floor();
+    if (player.mass.gte(10)) tmp.ranks.rank.bulk = player.mass.div(10).times(FORMS.ma.magiceff()[2]).max(1).log10().root(1.15).mul(fp).scaleEvery('rank',true).mul(fp2).add(1).floor();
     tmp.ranks.rank.can = player.mass.gte(tmp.ranks.rank.req) && !CHALS.inChal(5) && !CHALS.inChal(10) && !FERMIONS.onActive("03")
 
     fp = RANKS.fp.tier()

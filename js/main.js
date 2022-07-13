@@ -43,6 +43,8 @@ const FORMS = {
         if (hasTree("m1")) x = x.mul(tmp.supernova.tree_eff.m1)
 
         x = x.mul(tmp.bosons.effect.pos_w[0])
+        x=x.times(FORMS.ma.magiceff()[0])
+        x=x.times(FORMS.ma.magiceff()[1])
         x=x.div(1000)
         if (!hasElement(105)) x = x.mul(tmp.atom.particles[0].powerEffect.eff1)
         else x = x.pow(tmp.atom.particles[0].powerEffect.eff1)
@@ -153,6 +155,7 @@ const FORMS = {
         doReset() {
             player.ranks[RANKS.names[RANKS.names.length-1]] = E(0)
             RANKS.doReset[RANKS.names[RANKS.names.length-1]]()
+            player.ma.time=E(0)
         },
 
         give(){
@@ -161,6 +164,13 @@ const FORMS = {
                 let type=Math.floor(Math.random()*3)
                 player.ma.types[type]=player.ma.types[type].add(1)
             }
+        },
+
+        magiceff(){
+            let eff1=E(2).pow(player.ma.types[0].pow(0.75))
+            let eff2=player.ma.time.add(1).log(10).div(2).add(1).min(3).pow(player.ma.types[1].pow(0.75))
+            let eff3=E(2).pow(player.ma.types[2].pow(0.75))
+            return [eff1,eff2,eff3]
         }
     },
     tickspeed: {
