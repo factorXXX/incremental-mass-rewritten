@@ -295,6 +295,15 @@ button {
 	width: 140px;
 }
 
+.btn_tab.ma {
+	color: purple;
+	border-color: purple;
+}
+
+.btn_tab.ma:not(.choosed):hover {
+	background-color: #450048;
+}
+
 .btn_tab.bh {
 	color: gold;
 	border-color: gold;

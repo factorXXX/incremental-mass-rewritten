@@ -154,6 +154,14 @@ const FORMS = {
             player.ranks[RANKS.names[RANKS.names.length-1]] = E(0)
             RANKS.doReset[RANKS.names[RANKS.names.length-1]]()
         },
+
+        give(){
+            if(player.ma.points.gte(tmp.magicCost)){
+                player.ma.points=player.ma.points.sub(tmp.magicCost)
+                let type=Math.floor(Math.random()*3)
+                player.ma.types[type]=player.ma.types[type].add(1)
+            }
+        }
     },
     tickspeed: {
         cost(x=player.tickspeed) { return E(2).pow(x).floor() },

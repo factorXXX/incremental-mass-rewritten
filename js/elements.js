@@ -231,6 +231,12 @@ function updateUpperHTML() {
 	if (unl) tmp.el.supernovaAmt.setHTML(format(player.supernova.times,0)+"<br>(+"+format(tmp.supernova.bulk.sub(player.supernova.times).max(0),0)+")")
 }
 
+
+function updateMagicHTML() {
+	tmp.el.magic_btn.setClasses({btn: true, locked: !tmp.magiccan})
+	tmp.el.magiccost.setTxt(format(tmp.magicCost,0))	
+}
+
 function updateMassUpgradesHTML() {
 	for (let x = 1; x <= UPGS.mass.cols; x++) {
 		let upg = UPGS.mass[x]
@@ -427,6 +433,9 @@ function updateHTML() {
 			if (tmp.stab[4] == 3) updateBDHTML()
 		}
 		if (tmp.tab == 7) {
+			updateMagicHTML()
+		}
+		if (tmp.tab == 8) {
 			updateOptionsHTML()
 		}
 	}

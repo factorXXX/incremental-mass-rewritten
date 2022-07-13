@@ -3,13 +3,16 @@ const RANKS = {
     fullNames: ['Rank', 'Tier', 'Tetr', 'Pent'],
     reset(type) {
         if (tmp.ranks[type].can) {
-            player.ranks[type] = player.ranks[type].add(1)
+            //player.ranks[type] = player.ranks[type].add(1)
             let reset = true
+            alert("You can't do rank reset in this version.")
+            /*
             if (type == "rank" && player.mainUpg.rp.includes(4)) reset = false
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
             if (type == "pent" && hasTree("qol8")) reset = false
             if (reset) this.doReset[type]()
+            */
             updateRanksTemp()
         }
     },

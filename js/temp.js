@@ -161,6 +161,9 @@ function updateMagicTemp() {
     if (!tmp.ma) tmp.ma = {}
     tmp.ma.gain = FORMS.ma.gain()
     tmp.ma.can = tmp.ma.gain.gte(1)
+    tmp.magictypetotal=player.ma.types[0].add(player.ma.types[1]).add(player.ma.types[2])
+    tmp.magicCost = E(2).pow(tmp.magictypetotal).floor()
+    tmp.magiccan=player.ma.points.gte(tmp.magicCost)
 }
 
 function updateRagePowerTemp() {

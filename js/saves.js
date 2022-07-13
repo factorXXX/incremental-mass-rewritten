@@ -139,6 +139,7 @@ function getPlayerData() {
         ma: {
             points: E(0),
             unl: false,
+            types:[E(0),E(0),E(0)]
         },
         ranks: {
             rank: E(0),
