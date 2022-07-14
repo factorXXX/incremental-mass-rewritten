@@ -184,7 +184,7 @@ const FORMS = {
         },
         freemagic(){
             let gain=E(0)
-            if(player.ranks.rank.gte(1)) gain=gain.add(1)
+            if(player.ranks.rank.gte(2)) gain=gain.add(1)
             return gain
         }
     },
