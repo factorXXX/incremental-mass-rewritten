@@ -5,7 +5,8 @@ const RANKS = {
         if (tmp.ranks[type].can) {
             player.ranks[type] = player.ranks[type].add(1)
             let reset = true
-            if (type == "tier") return alert("You can't do tier reset on this version.")
+            if (type == "tier") return alert("You can't do tier reset on this version.");
+            if (type == "tier") reset = false
             if (type == "rank" && player.mainUpg.rp.includes(4)) reset = false
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
