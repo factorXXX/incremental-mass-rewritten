@@ -65,7 +65,7 @@ const RANKS = {
         rank: {
             '1': "unlock mass upgrade 1, magic gain is tripled.",
             '2': "unlock mass upgrade 2, reduce mass upgrade 1 cost scaled by 20%, get a free magic.",
-            '3': "unlock mass upgrade 3, reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself and triple mass gain.",
+            '3': "reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself and triple mass gain.",
             '4': "reduce mass upgrade 3 cost scale by 20%.",
             '5': "mass upgrade 2 boosts itself.",
             '6': "make mass gain is boosted by (x+1)^2, where x is rank.",
