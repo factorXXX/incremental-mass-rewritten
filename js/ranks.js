@@ -3,16 +3,14 @@ const RANKS = {
     fullNames: ['Rank', 'Tier', 'Tetr', 'Pent'],
     reset(type) {
         if (tmp.ranks[type].can) {
-            //player.ranks[type] = player.ranks[type].add(1)
+            player.ranks[type] = player.ranks[type].add(1)
             let reset = true
-            alert("You can't do rank reset in this version.")
-            /*
+            if (type == "tier") return alert("You can't do tier reset on this version.")
             if (type == "rank" && player.mainUpg.rp.includes(4)) reset = false
             if (type == "tier" && player.mainUpg.bh.includes(4)) reset = false
             if (type == "tetr" && hasTree("qol5")) reset = false
             if (type == "pent" && hasTree("qol8")) reset = false
             if (reset) this.doReset[type]()
-            */
             updateRanksTemp()
         }
     },
@@ -36,7 +34,11 @@ const RANKS = {
     doReset: {
         rank() {
             player.mass = E(0)
+            player.ma.points= E(0),
+            player.ma.types=[E(0),E(0),E(0)],
+            player.ma.time=E(0)
             for (let x = 1; x <= UPGS.mass.cols; x++) if (player.massUpg[x]) player.massUpg[x] = E(0)
+
         },
         tier() {
             player.ranks.rank = E(0)
@@ -60,9 +62,9 @@ const RANKS = {
     },
     desc: {
         rank: {
-            '1': "unlock mass upgrade 1.",
-            '2': "unlock mass upgrade 2, reduce mass upgrade 1 cost scaled by 20%.",
-            '3': "unlock mass upgrade 3, reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself.",
+            '1': "unlock mass upgrade 1, magic gain is tripled.",
+            '2': "unlock mass upgrade 2, reduce mass upgrade 1 cost scaled by 20%, get a free magic.",
+            '3': "unlock mass upgrade 3, reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself and triple mass gain.",
             '4': "reduce mass upgrade 3 cost scale by 20%.",
             '5': "mass upgrade 2 boosts itself.",
             '6': "make mass gain is boosted by (x+1)^2, where x is rank.",

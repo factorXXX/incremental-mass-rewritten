@@ -25,6 +25,7 @@ const UPGS = {
             }
         },
         buyMax(x) {
+            return alert("No Buy Max, No Bug")
             let d = tmp.upgs.mass[x]
             let bulk = d.bulk
             let cost = d.cost
@@ -62,7 +63,7 @@ const UPGS = {
         1: {
             unl() { return player.ranks.rank.gte(1) || player.mainUpg.atom.includes(1) },
             title: "Muscler",
-            start: E(10),
+            start: E(1),
             inc: E(1.5),
             effect(x) {
                 let step = E(1)
@@ -73,8 +74,8 @@ const UPGS = {
             },
             effDesc(eff) {
                 return {
-                    step: "+"+formatMass(eff.step),
-                    eff: "+"+formatMass(eff.eff)+" to mass gain"
+                    step: "+"+formatMass(eff.step.div(1000)),
+                    eff: "+"+formatMass(eff.eff.div(1000))+" to mass gain"
                 }
             },
             bonus() {
@@ -88,7 +89,7 @@ const UPGS = {
         2: {
             unl() { return player.ranks.rank.gte(2) || player.mainUpg.atom.includes(1) },
             title: "Booster",
-            start: E(100),
+            start: E(10),
             inc: E(4),
             effect(x) {
                 let step = E(2)

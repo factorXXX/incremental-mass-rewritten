@@ -32,6 +32,7 @@ const FORMS = {
     massGain() {
         let x = E(1)
         x = x.add(tmp.upgs.mass[1]?tmp.upgs.mass[1].eff.eff:1)
+        if (player.ranks.rank.gte(3)) x = x.mul(3)
         if (player.ranks.rank.gte(6)) x = x.mul(RANKS.effect.rank[6]())
         if (player.ranks.rank.gte(13)) x = x.mul(3)
         x = x.mul(tmp.tickspeedEffect.eff||E(1))
@@ -140,6 +141,7 @@ const FORMS = {
         gain(){
             if(player.mass.lt(0.05)) return E(0)
             let gain=player.mass.div(0.05).pow(0.3)
+            if (player.ranks.rank.gte(1))gain=gain.times(3)
             gain=gain.floor()
             return gain
         },
@@ -152,9 +154,17 @@ const FORMS = {
             }
         },
 
+        resetmagic() {
+            if (confirm("Are you sure to reset?")) {
+                player.ma.types[0]=E(0)
+                player.ma.types[1]=E(0)
+                player.ma.types[2]=E(0)
+                this.doReset()
+            } 
+        },
+
         doReset() {
-            player.ranks[RANKS.names[RANKS.names.length-1]] = E(0)
-            RANKS.doReset[RANKS.names[RANKS.names.length-1]]()
+            player.mass = E(0)
             player.ma.time=E(0)
         },
 
@@ -171,6 +181,11 @@ const FORMS = {
             let eff2=player.ma.time.add(1).log(10).div(2).add(1).min(3).pow(player.ma.types[1].pow(0.75))
             let eff3=E(2).pow(player.ma.types[2].pow(0.75))
             return [eff1,eff2,eff3]
+        },
+        freemagic(){
+            let gain=E(0)
+            if(player.ranks.rank.gte(1)) gain=gain.add(1)
+            return gain
         }
     },
     tickspeed: {

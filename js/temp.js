@@ -162,7 +162,8 @@ function updateMagicTemp() {
     tmp.ma.gain = FORMS.ma.gain()
     tmp.ma.can = tmp.ma.gain.gte(1)
     tmp.magictypetotal=player.ma.types[0].add(player.ma.types[1]).add(player.ma.types[2])
-    tmp.magicCost = E(2).pow(tmp.magictypetotal).floor()
+    if(FORMS.ma.freemagic().gt(tmp.magictypetotal)) tmp.magicCost = E(0)
+    tmp.magicCost = E(2).pow(tmp.magictypetotal.sub(FORMS.ma.freemagic())).floor()
     tmp.magiccan=player.ma.points.gte(tmp.magicCost)
 }
 
