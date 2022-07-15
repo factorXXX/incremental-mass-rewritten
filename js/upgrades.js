@@ -113,7 +113,7 @@ const UPGS = {
             },
         },
         3: {
-            unl() { return player.ranks.rank.gte(5) || player.mainUpg.atom.includes(1) },
+            unl() { return player.ranks.rank.gte(500) || player.mainUpg.atom.includes(1) },
             title: "Stronger",
             start: E(1000),
             inc: E(9),
