@@ -216,7 +216,7 @@ function getScalingStart(type, name) {
 		}
 		if (name=="massUpg") {
 			if (CHALS.inChal(1) || CHALS.inChal(10)) return E(25)
-			if (player.mainUpg.bh.includes(3)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[2][3].effect:0:0)
+			if (player.mainUpg.bh.includes(3)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[3][3].effect:0:0)
 		}
 		if (name=='tickspeed') {
 			if (CHALS.inChal(1) || CHALS.inChal(10)) return E(50)
@@ -231,7 +231,7 @@ function getScalingStart(type, name) {
 			if (player.ranks.tetr.gte(5)) start = start.add(RANKS.effect.tetr[5]())
 		}
 		if (name=="rank") {
-			if (player.mainUpg.atom.includes(10)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[3][10].effect:0:0)
+			if (player.mainUpg.atom.includes(10)) start = start.add(tmp.upgs?tmp.upgs.main?tmp.upgs.main[4][10].effect:0:0)
 		}
 	}
 	if (type=="ultra") {
@@ -293,7 +293,7 @@ function getScalingPower(type, name) {
 			if (hasElement(74)) power = power.mul(0.75)
 		}
 		if (name=="massUpg") {
-			if (player.mainUpg.rp.includes(8)) power = power.mul(tmp.upgs.main?tmp.upgs.main[1][8].effect:1)
+			if (player.mainUpg.rp.includes(8)) power = power.mul(tmp.upgs.main?tmp.upgs.main[2][8].effect:1)
 		}
 		if (name=='tickspeed') {
 			power = power.mul(tmp.chal?tmp.chal.eff[1].tick:1)
@@ -321,7 +321,7 @@ function getScalingPower(type, name) {
 			if (hasElement(37)) power = power.mul(tmp.elements.effect[37])
 		}
 		if (name=="massUpg") {
-			if (player.mainUpg.rp.includes(8)) power = power.mul(tmp.upgs.main?tmp.upgs.main[1][8].effect:1)
+			if (player.mainUpg.rp.includes(8)) power = power.mul(tmp.upgs.main?tmp.upgs.main[2][8].effect:1)
 		}
 		if (name=='tickspeed') {
 			if (player.mainUpg.bh.includes(12)) power = power.mul(0.85)

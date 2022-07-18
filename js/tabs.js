@@ -13,7 +13,7 @@ const TABS = {
     1: [
         { id: "Main" },
         { id: "Stats" },
-        { id: "Upgrades", unl() { return player.rp.unl } },
+        { id: "Upgrades", unl() { return player.ranks.tier.gte(1)||player.rp.unl } },
         { id: "Challenges", unl() { return player.chal.unl } },
         { id: "Atom", unl() { return player.atom.unl }, style: "atom" },
         { id: "Supernova", unl() { return player.supernova.times.gte(1) || quUnl() }, style: "sn" },

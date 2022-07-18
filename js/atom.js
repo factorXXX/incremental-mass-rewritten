@@ -4,7 +4,7 @@ const ATOM = {
         let x = player.bh.mass.div(player.mainUpg.br.includes(1)?1.5e156**0.5:1.5e156)
         if (x.lt(1)) return E(0)
         x = x.root(5)
-        if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[1][15].effect:E(1))
+        if (player.mainUpg.rp.includes(15)) x = x.mul(tmp.upgs.main?tmp.upgs.main[2][15].effect:E(1))
         x = x.mul(tmp.bosons.upgs.gluon[0].effect)
         if (hasElement(17)) x = x.pow(1.1)
         x = x.pow(tmp.prim.eff[3][0])
@@ -19,7 +19,7 @@ const ATOM = {
         x = tmp.atom.gain.max(1).log10().pow(1.1).add(1)
         if (hasElement(1)) x = E(1.25).pow(tmp.atom.gain.max(1).log10())
         if (player.mainUpg.bh.includes(13)) x = x.mul(10)
-        if (player.mainUpg.atom.includes(8)) x = x.mul(tmp.upgs.main?tmp.upgs.main[3][8].effect:E(1))
+        if (player.mainUpg.atom.includes(8)) x = x.mul(tmp.upgs.main?tmp.upgs.main[4][8].effect:E(1))
         if (player.ranks.rank.gte(300)) x = x.mul(RANKS.effect.rank[300]())
         if (hasElement(6)) x = x.mul(tmp.elements.effect[6])
         if (hasElement(42)) x = x.mul(tmp.elements.effect[42])
@@ -85,8 +85,8 @@ const ATOM = {
             let t = player.atom.gamma_ray
             t = t.mul(tmp.radiation.bs.eff[10])
             let pow = E(2)
-            if (player.mainUpg.atom.includes(4)) pow = pow.add(tmp.upgs.main?tmp.upgs.main[3][4].effect:E(0))
-            if (player.mainUpg.atom.includes(11)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[3][11].effect:E(1))
+            if (player.mainUpg.atom.includes(4)) pow = pow.add(tmp.upgs.main?tmp.upgs.main[4][4].effect:E(0))
+            if (player.mainUpg.atom.includes(11)) pow = pow.mul(tmp.upgs.main?tmp.upgs.main[4][11].effect:E(1))
             if (hasTree("gr1")) pow = pow.mul(tmp.supernova.tree_eff.gr1)
             pow = pow.mul(tmp.bosons.upgs.gluon[1].effect)
             pow = pow.mul(tmp.prim.eff[3][1])
@@ -131,7 +131,7 @@ const ATOM = {
         },
         gain(i) {
             let x = tmp.atom.particles[i]?tmp.atom.particles[i].effect:E(0)
-            if (player.mainUpg.atom.includes(7)) x = x.mul(tmp.upgs.main?tmp.upgs.main[3][7].effect:E(1))
+            if (player.mainUpg.atom.includes(7)) x = x.mul(tmp.upgs.main?tmp.upgs.main[4][7].effect:E(1))
             if (QCs.active()) x = x.pow(tmp.qu.qc_eff[4])
             return x
         },

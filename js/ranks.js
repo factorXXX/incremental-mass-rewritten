@@ -41,6 +41,7 @@ const RANKS = {
         },
         tier() {
             player.ranks.rank = E(0)
+            //player.mainupg.ma=[] |I am not that bad...
             this.rank()
         },
         tetr() {
@@ -64,9 +65,10 @@ const RANKS = {
             '1': "unlock mass upgrade 1, magic gain is tripled.",
             '2': "unlock mass upgrade 2, reduce mass upgrade 1 cost scaled by 20%, get a free magic.",
             '3': "reduce mass upgrade 2 cost scaled by 20%, mass upgrade 1 boosts itself and triple mass gain.",
-            '4': "reduce mass upgrade 3 cost scale by 20%.",
             '5': "mass upgrade 2 boosts itself.",
-            '6': "make mass gain is boosted by (x+1)^2, where x is rank.",
+            '6': "make mass and magic gain is boosted by (x+1)^0.7, where x is rank.",
+            '7': "get a free magic per 2 rank.",
+            '8':"unlock mass upgrade 3.",
             '13': "triple mass gain.",
             '14': "double Rage Powers gain.",
             '17': "make rank 6 reward effect is better. [(x+1)^2 -> (x+1)^x^1/3]",
@@ -82,7 +84,7 @@ const RANKS = {
         },
         tier: {
             '1': "reduce rank reqirements by 20%.",
-            '2': "raise mass gain by 1.15",
+            '2': "raise mass gain by 1.15 and magic gain is triple.",
             '3': "reduce all mass upgrades cost scale by 20%.",
             '4': "adds +5% tickspeed power for every tier you have, softcaps at +40%.",
             '6': "make rage powers boosted by tiers.",
@@ -120,7 +122,7 @@ const RANKS = {
                 return ret
             },
             '6'() {
-                let ret = player.ranks.rank.add(1).pow(player.ranks.rank.gte(17)?player.ranks.rank.add(1).root(3):2)
+                let ret = player.ranks.rank.add(1).pow(player.ranks.rank.gte(17)?player.ranks.rank.add(1).root(3):0.7)
                 return ret
             },
             '40'() {

@@ -80,7 +80,7 @@ const UPGS = {
             },
             bonus() {
                 let x = E(0)
-                if (player.mainUpg.rp.includes(1)) x = x.add(tmp.upgs.main?tmp.upgs.main[1][1].effect:E(0))
+                if (player.mainUpg.rp.includes(1)) x = x.add(tmp.upgs.main?tmp.upgs.main[2][1].effect:E(0))
                 if (player.mainUpg.rp.includes(2)) x = x.add(tmp.upgs.mass[2].bonus)
                 x = x.mul(getEnRewardEff(4))
                 return x
@@ -106,26 +106,26 @@ const UPGS = {
             },
             bonus() {
                 let x = E(0)
-                if (player.mainUpg.rp.includes(2)) x = x.add(tmp.upgs.main?tmp.upgs.main[1][2].effect:E(0))
+                if (player.mainUpg.rp.includes(2)) x = x.add(tmp.upgs.main?tmp.upgs.main[2][2].effect:E(0))
                 if (player.mainUpg.rp.includes(7)) x = x.add(tmp.upgs.mass[3].bonus)
                 x = x.mul(getEnRewardEff(4))
                 return x
             },
         },
         3: {
-            unl() { return player.ranks.rank.gte(500) || player.mainUpg.atom.includes(1) },
+            unl() { return player.ranks.rank.gte(8) || player.mainUpg.atom.includes(1) },
             title: "Stronger",
-            start: E(1000),
-            inc: E(9),
+            start: E(1e8),
+            inc: E(1e8),
             effect(x) {
                 let xx = x.add(tmp.upgs.mass[3].bonus)
                 if (hasElement(81)) xx = xx.pow(1.1)
                 let ss = E(10)
                 if (player.ranks.rank.gte(34)) ss = ss.add(2)
-                if (player.mainUpg.bh.includes(9)) ss = ss.add(tmp.upgs.main?tmp.upgs.main[2][9].effect:E(0))
+                if (player.mainUpg.bh.includes(9)) ss = ss.add(tmp.upgs.main?tmp.upgs.main[3][9].effect:E(0))
                 let step = E(1).add(RANKS.effect.tetr[2]())
                 if (player.mainUpg.rp.includes(9)) step = step.add(0.25)
-                if (player.mainUpg.rp.includes(12)) step = step.add(tmp.upgs.main?tmp.upgs.main[1][12].effect:E(0))
+                if (player.mainUpg.rp.includes(12)) step = step.add(tmp.upgs.main?tmp.upgs.main[2][12].effect:E(0))
                 if (hasElement(4)) step = step.mul(tmp.elements.effect[4])
                 if (player.md.upgs[3].gte(1)) step = step.mul(tmp.md.upgs[3].eff)
                 let sp = 0.5
@@ -140,17 +140,18 @@ const UPGS = {
                 let ret = step.mul(xx.mul(hasElement(80)?25:1)).add(1).softcap(ss,sp,0).softcap(1.8e5,hasPrestige(0,12)?0.525:0.5,0)
                 ret = ret.mul(tmp.prim.eff[0])
                 if (!player.ranks.pent.gte(15)) ret = ret.softcap(ss2,sp2,0)
-                return {step: step, eff: ret, ss: ss}
+                let eff2=E(5).pow(xx)
+                return {step: step, eff: ret, ss: ss, eff2: eff2}
             },
             effDesc(eff) {
                 return {
                     step: "+^"+format(eff.step),
-                    eff: "^"+format(eff.eff)+" to Booster Power"+(eff.eff.gte(eff.ss)?` <span class='soft'>(softcapped${eff.eff.gte(1.8e5)?eff.eff.gte(5e15)&&!player.ranks.pent.gte(15)?"^3":"^2":""})</span>`:"")
+                    eff: "^"+format(eff.eff)+" to Booster Power"+(eff.eff.gte(eff.ss)?` <span class='soft'>(softcapped${eff.eff.gte(1.8e5)?eff.eff.gte(5e15)&&!player.ranks.pent.gte(15)?"^3":"^2":""})</span>`:"<br>mass gain x"+format(eff.eff2))
                 }
             },
             bonus() {
                 let x = E(0)
-                if (player.mainUpg.rp.includes(7)) x = x.add(tmp.upgs.main?tmp.upgs.main[1][7].effect:0)
+                if (player.mainUpg.rp.includes(7)) x = x.add(tmp.upgs.main?tmp.upgs.main[2][7].effect:0)
                 x = x.mul(getEnRewardEff(4))
                 return x
             },
@@ -165,11 +166,45 @@ const UPGS = {
                 }
             }
         },
-        ids: [null, 'rp', 'bh', 'atom', 'br'],
-        cols: 4,
+        ids: [null, 'ma', 'rp', 'bh', 'atom', 'br'],
+        cols: 5,
         over(x,y) { player.main_upg_msg = [x,y] },
         reset() { player.main_upg_msg = [0,0] },
         1: {
+            title: "Magic Upgrades",
+            res: "Magic",
+            getRes() { return player.ma.points },
+            unl() { return player.ranks.tier.gte(1)||player.rp.unlocked },
+            can(x) { return player.ma.points.gte(this[x].cost) && !player.mainUpg.ma.includes(x) },
+            buy(x) {
+                if (this.can(x)) {
+                    player.ma.points = player.ma.points.sub(this[x].cost)
+                    player.mainUpg.ma.push(x)
+                }
+            },
+            auto_unl() { return false },
+            lens: 3,
+            1: {
+                desc: "Magics boost Mass gain",
+                cost: E(10),
+                effect() {
+                    let ret = player.ma.points.add(1).log(10).add(1)
+                    return ret
+                },
+                effDesc(x=this.effect()) {
+                    return format(x,2)+"x"
+                },
+            },
+            2: {
+                desc: "Time boost magic time run 5x faster.",
+                cost: E(1000),
+            },
+            3: {
+                desc: "Unlock god (wip).",
+                cost: E(5000),
+            },
+        },
+        2: {
             title: "Rage Upgrades",
             res: "Rage Power",
             getRes() { return player.rp.points },
@@ -307,7 +342,7 @@ const UPGS = {
                 },
             },
         },
-        2: {
+        3: {
             title: "Black Hole Upgrades",
             res: "Dark Matter",
             getRes() { return player.bh.dm },
@@ -447,7 +482,7 @@ const UPGS = {
                 },
             },
         },
-        3: {
+        4: {
             title: "Atom Upgrades",
             res: "Atom",
             getRes() { return player.atom.points },
@@ -569,7 +604,7 @@ const UPGS = {
                 cost: E('e3.4e14'),
             },
         },
-        4: {
+        5: {
             title: "Big Rip Upgrades",
             res: "Death Shard",
             getRes() { return player.qu.rip.amt },

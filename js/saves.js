@@ -70,7 +70,7 @@ function calc(dt, dt_offline) {
 
     if (tmp.pass) {
         player.mass = player.mass.add(tmp.massGain.mul(du_gs))
-        player.ma.time = player.ma.time.add(du_gs)
+        player.ma.time = player.ma.time.add(du_gs.times(hasUpgrade("ma",2)?5:1))
         if (player.mainUpg.rp.includes(3)) for (let x = 1; x <= UPGS.mass.cols; x++) if (player.autoMassUpg[x] && (player.ranks.rank.gte(x) || player.mainUpg.atom.includes(1))) UPGS.mass.buyMax(x)
         if (FORMS.tickspeed.autoUnl() && player.autoTickspeed) FORMS.tickspeed.buyMax()
         if (FORMS.bh.condenser.autoUnl() && player.bh.autoCondenser) FORMS.bh.condenser.buyMax()
@@ -141,7 +141,8 @@ function getPlayerData() {
             points: E(0),
             unl: false,
             types:[E(0),E(0),E(0)],
-            time:E(0)
+            time:E(0),
+            god:-1,
         },
         ranks: {
             rank: E(0),
@@ -263,6 +264,7 @@ function getPlayerData() {
             current: Date.now(),
             time: 0,
         },
+        devspeed: 1,
         time: 0,
     }
     for (let x = 0; x < PRES_LEN; x++) s.prestiges.push(E(0))
