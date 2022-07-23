@@ -69,8 +69,8 @@ const RANKS = {
             '6': "make mass and magic gain is boosted by (x+1)^0.7, where x is rank.",
             '7': "get a free magic per 2 rank.",
             '8':"unlock mass upgrade 3.",
-            '13': "triple mass gain.",
-            '14': "double Rage Powers gain.",
+            '12': "triple mass gain.",
+            '14': "Unlock the ability to rage reset.",
             '17': "make rank 6 reward effect is better. [(x+1)^2 -> (x+1)^x^1/3]",
             '34': "make mass upgrade 3 softcap start 1.2x later.",
             '40': "adds tickspeed power based on ranks.",
@@ -84,7 +84,7 @@ const RANKS = {
         },
         tier: {
             '1': "reduce rank reqirements by 20%.",
-            '2': "raise mass gain by 1.15 and magic gain is triple.",
+            '2': "raise mass gain by 1.15, magic gain is triple and mass gain is doubled per tier.",
             '3': "reduce all mass upgrades cost scale by 20%.",
             '4': "adds +5% tickspeed power for every tier you have, softcaps at +40%.",
             '6': "make rage powers boosted by tiers.",
@@ -122,7 +122,7 @@ const RANKS = {
                 return ret
             },
             '6'() {
-                let ret = player.ranks.rank.add(1).pow(player.ranks.rank.gte(17)?player.ranks.rank.add(1).root(3):0.7)
+                let ret = player.ranks.rank.add(1).pow(player.ranks.rank.gte(17)?player.ranks.rank.add(1).root(3):hasUpgrade('ma',5)?1.5:0.7)
                 return ret
             },
             '40'() {
@@ -149,6 +149,10 @@ const RANKS = {
             },
         },
         tier: {
+            '2'() {
+                let ret = E(2).pow(player.ranks.tier)
+                return ret
+            },
             '4'() {
                 let ret = E(0)
                 if (player.ranks.tier.gte(12)) ret = player.ranks.tier.mul(0.1)
@@ -215,6 +219,7 @@ const RANKS = {
             800(x) { return format(E(1).sub(x).mul(100))+"% weaker" },
         },
         tier: {
+            2(x) { return format(x)+"x" },
             4(x) { return "+"+format(x.mul(100))+"%" },
             6(x) { return format(x)+"x" },
             8(x) { return "^"+format(x) },

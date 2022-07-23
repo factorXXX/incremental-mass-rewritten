@@ -146,9 +146,9 @@ function updateMassTemp() {
 
 function updateTickspeedTemp() {
     tmp.tickspeedFP = tmp.fermions.effs[1][2]
-    tmp.tickspeedCost = E(2).pow(player.tickspeed.scaleEvery('tickspeed')).floor()
+    tmp.tickspeedCost = E(2).pow(player.tickspeed.add(1).scaleEvery('tickspeed')).floor()
     tmp.tickspeedBulk = E(0)
-    if (player.rp.points.gte(1)) tmp.tickspeedBulk = player.rp.points.max(1).log(2).scaleEvery('tickspeed',true).add(1).floor()
+    if (player.rp.points.gte(1)) tmp.tickspeedBulk = player.rp.points.max(1).log(2).sub(1).scaleEvery('tickspeed',true).add(1).floor()
     tmp.tickspeedEffect = FORMS.tickspeed.effect()
 }
 

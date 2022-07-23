@@ -35,7 +35,7 @@ const FORMS = {
         x = x.add(tmp.upgs.mass[1]?tmp.upgs.mass[1].eff.eff:1)
         if (player.ranks.rank.gte(3)) x = x.mul(3)
         if (player.ranks.rank.gte(6)) x = x.mul(RANKS.effect.rank[6]())
-        if (player.ranks.rank.gte(13)) x = x.mul(3)
+        if (player.ranks.rank.gte(12)) x = x.mul(3)
         x = x.mul(tmp.tickspeedEffect.eff||E(1))
         if (player.bh.unl) x = x.mul(tmp.bh.effect)
         if (player.mainUpg.bh.includes(10)) x = x.mul(tmp.upgs.main?tmp.upgs.main[2][10].effect:E(1))
@@ -51,6 +51,7 @@ const FORMS = {
         x=x.times(FORMS.ma.magiceff()[1])
         if (hasUpgrade("ma",1)) x=x.times(tmp.upgs.main[1][1].effect)
         x=x.mul(tmp.upgs.mass[3].eff.eff2)
+        if(player.ranks.tier.gte(2))x=x.mul(RANKS.effect.tier[2]())
         x=x.div(1000)
         if (!hasElement(105)) x = x.mul(tmp.atom.particles[0].powerEffect.eff1)
         else x = x.pow(tmp.atom.particles[0].powerEffect.eff1)
@@ -75,7 +76,7 @@ const FORMS = {
         return x
     },
     massSoftGain() {
-        let s = E(1e10)
+        let s = E(1e6)
         if (CHALS.inChal(3) || CHALS.inChal(10) || FERMIONS.onActive("03")) s = s.div(1e150)
         if (CHALS.inChal(4) || CHALS.inChal(10) || FERMIONS.onActive("03")) s = s.div(1e100)
         if (player.mainUpg.bh.includes(7)) s = s.mul(tmp.upgs.main?tmp.upgs.main[3][7].effect:E(1))
@@ -148,6 +149,7 @@ const FORMS = {
             if (player.ranks.rank.gte(1))gain=gain.times(3)
             if (player.ranks.rank.gte(6)) gain = gain.mul(RANKS.effect.rank[6]())
             if (player.ranks.tier.gte(2))gain=gain.times(3)
+            if(gain.gte(10000)) gain=gain.softcap(10000,0.75,0)
             gain=gain.floor()
             return gain
         },
@@ -227,7 +229,7 @@ const FORMS = {
         }
     },
     tickspeed: {
-        cost(x=player.tickspeed) { return E(2).pow(x).floor() },
+        cost(x=player.tickspeed) { return E(2).pow(x.add(1)).floor() },
         can() { return player.rp.points.gte(tmp.tickspeedCost) && !CHALS.inChal(2) && !CHALS.inChal(6) && !CHALS.inChal(10) },
         buy() {
             if (this.can()) {
@@ -280,9 +282,8 @@ const FORMS = {
     },
     rp: {
         gain() {
-            if (player.mass.lt(1e15) || CHALS.inChal(7) || CHALS.inChal(10)) return E(0)
-            let gain = player.mass.div(1e15).root(3)
-            if (player.ranks.rank.gte(14)) gain = gain.mul(2)
+            if (player.mass.lt(1e14) || CHALS.inChal(7) || CHALS.inChal(10)|| !player.ranks.rank.gte(14)) return E(0)
+            let gain = player.mass.div(1e14).root(3)
             if (player.ranks.rank.gte(45)) gain = gain.mul(RANKS.effect.rank[45]())
             if (player.ranks.tier.gte(6)) gain = gain.mul(RANKS.effect.tier[6]())
             if (player.mainUpg.bh.includes(6)) gain = gain.mul(tmp.upgs.main?tmp.upgs.main[3][6].effect:E(1))
@@ -310,6 +311,9 @@ const FORMS = {
         doReset() {
             player.ranks[RANKS.names[RANKS.names.length-1]] = E(0)
             RANKS.doReset[RANKS.names[RANKS.names.length-1]]()
+            let keep = []
+            for (let x = 0; x < player.mainUpg.ma.length; x++) if ([3,4].includes(player.mainUpg.ma[x])) keep.push(player.mainUpg.ma[x])
+            player.mainUpg.ma = keep
         },
     },
     bh: {
@@ -446,7 +450,7 @@ const FORMS = {
     reset_msg: {
         msgs: {
             ma: "Require over 50 mg of mass to reset previous features for gain Magics",
-            rp: "Require over 1e9 tonne of mass to reset previous features for gain Rage Powers",
+            rp: "Require over 1e8 tonne of mass and rank 14 to reset previous features for gain Rage Powers",
             dm: "Require over 1e20 Rage Power to reset all previous features for gain Dark Matters",
             atom: "Require over 1e100 uni of black hole to reset all previous features for gain Atoms & Quarks",
             md: "Dilate mass, then cancel",

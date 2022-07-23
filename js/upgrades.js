@@ -25,7 +25,7 @@ const UPGS = {
             }
         },
         buyMax(x) {
-            return alert("No Buy Max, No Bug")
+            if(!hasUpgrade("ma",4)) return alert("No Buy Max, No Bug");
             let d = tmp.upgs.mass[x]
             let bulk = d.bulk
             let cost = d.cost
@@ -116,7 +116,7 @@ const UPGS = {
             unl() { return player.ranks.rank.gte(8) || player.mainUpg.atom.includes(1) },
             title: "Stronger",
             start: E(1e8),
-            inc: E(1e8),
+            inc: E(1e3),
             effect(x) {
                 let xx = x.add(tmp.upgs.mass[3].bonus)
                 if (hasElement(81)) xx = xx.pow(1.1)
@@ -174,7 +174,7 @@ const UPGS = {
             title: "Magic Upgrades",
             res: "Magic",
             getRes() { return player.ma.points },
-            unl() { return player.ranks.tier.gte(1)||player.rp.unlocked },
+            unl() { return player.ranks.tier.gte(1)||player.rp.unl },
             can(x) { return player.ma.points.gte(this[x].cost) && !player.mainUpg.ma.includes(x) },
             buy(x) {
                 if (this.can(x)) {
@@ -183,7 +183,7 @@ const UPGS = {
                 }
             },
             auto_unl() { return false },
-            lens: 3,
+            lens: 5,
             1: {
                 desc: "Magics boost Mass gain",
                 cost: E(10),
@@ -200,8 +200,18 @@ const UPGS = {
                 cost: E(1000),
             },
             3: {
-                desc: "Unlock god (wip).",
+                desc: "Unlock god.",
                 cost: E(5000),
+            },
+            4: {
+                unl(){return player.ranks.tier.gte(2)||player.rp.unl},
+                desc: "Unlock buy max lol.",
+                cost: E(1e5),
+            },
+            5: {
+                unl(){return player.ranks.rank.gte(11)||player.rp.unl},
+                desc: "Rank 6 effect exponent become 1.5.",
+                cost: E(5e5),
             },
         },
         2: {
@@ -217,10 +227,10 @@ const UPGS = {
                 }
             },
             auto_unl() { return player.mainUpg.bh.includes(5) },
-            lens: 15,
+            lens: 16,
             1: {
                 desc: "Boosters adds Musclers.",
-                cost: E(1),
+                cost: E(2),
                 effect() {
                     let ret = E(player.massUpg[2]||0)
                     return ret
@@ -340,6 +350,10 @@ const UPGS = {
                 effDesc(x=this.effect()) {
                     return "x"+format(x)
                 },
+            },
+            16: {
+                desc: "Unlock super magic (wip).",
+                cost: E(1),
             },
         },
         3: {
